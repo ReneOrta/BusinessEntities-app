@@ -4,6 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class BusinessEntitiesViewModel : ViewModel() {
+    enum class ValoresRegistro {
+        Indx, BE, Per, Stre, Vend;
+    }
 
     val businessEntitiesView= BusinessEntities()
     val personView= Person()

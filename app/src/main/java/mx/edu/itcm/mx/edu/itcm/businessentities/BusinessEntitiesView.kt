@@ -15,31 +15,49 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.BEMenu
+
 
 enum class ValoresRegistro {
     Indx, BE, Per, Stre, Vend;
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun BEScreen(modifier: Modifier = Modifier) {
     var valoresRegistro by remember { mutableStateOf(ValoresRegistro.Indx) }
     //val businessEntitiesViewModel:BusinessEntitiesViewModel = viewModel()
     //var showOptions by remember { mutableStateOf(false) }
+
+    Row{
+        BEMenu()
+        Text(text = "Entidades de Negocios", style =MaterialTheme.typography.headlineLarge )
+    }
+
     Column (
         modifier=Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
+       /*
         Text(text = "Entidades de Negocios", style =MaterialTheme.typography.headlineLarge )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -141,7 +159,6 @@ fun BEScreen(modifier: Modifier = Modifier) {
                     Text(text = "Agregar proveedor")
                 }
             }
-        }
-
+        }*/
     }
 }
