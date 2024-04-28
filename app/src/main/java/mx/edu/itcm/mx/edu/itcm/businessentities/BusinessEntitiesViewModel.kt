@@ -2,6 +2,10 @@ package mx.edu.itcm.mx.edu.itcm.businessentities
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.BusinessEntities
+import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Person
+import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Store
+import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Vendor
 
 class BusinessEntitiesViewModel : ViewModel() {
     enum class ValoresRegistro {
@@ -10,8 +14,8 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     val businessEntitiesView= BusinessEntities()
     val personView= Person()
-    val storeView=Store()
-    val vendorView=Vendor()
+    val storeView= Store()
+    val vendorView= Vendor()
 
     //Person variables
     var personType=mutableStateOf("")//Person Type
