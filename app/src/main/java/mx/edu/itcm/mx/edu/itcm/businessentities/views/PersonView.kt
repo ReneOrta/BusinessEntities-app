@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -24,7 +25,8 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun PersonView(innerPadding: PaddingValues){
     Column(
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier
+            .padding(innerPadding)
             .fillMaxSize()
             .background(Color.White),
         verticalArrangement = Arrangement.Center,
@@ -50,9 +52,17 @@ fun PersonView(innerPadding: PaddingValues){
             label = { Text("Last Name") }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { /*TODO*/ }) {
-            Text(text = "Add Person")
+        Row {
+            //Button to add a new person to the database
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Add Person")
+            }
+            //Button to consult a Person
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Consult Person")
+            }
         }
+
     }
 
 }

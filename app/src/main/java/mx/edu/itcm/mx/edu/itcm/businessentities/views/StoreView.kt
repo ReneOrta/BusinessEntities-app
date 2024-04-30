@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,7 +24,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun StoreView(innerPadding: PaddingValues){
     Column(
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier
+            .padding(innerPadding)
             .fillMaxSize()
             .background(Color.White),
         verticalArrangement = Arrangement.Center,
@@ -37,8 +39,16 @@ fun StoreView(innerPadding: PaddingValues){
            label = { Text("Store Name") }
        )
        Spacer(modifier = Modifier.height(16.dp))
-       Button(onClick = { /*TODO*/ }) {
-           Text(text = "Add Store")
-       }
+        Row {
+            //  Button to add a new Store to the database
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Add Store")
+            }
+            //Button to consult a Store
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Consult Store")
+            }
+        }
+
     }
 }

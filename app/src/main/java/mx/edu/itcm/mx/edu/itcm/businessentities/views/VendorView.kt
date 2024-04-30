@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,7 +24,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun VendorView(innerPadding: PaddingValues){
     Column(
-        modifier = Modifier.padding(innerPadding)
+        modifier = Modifier
+            .padding(innerPadding)
             .fillMaxSize()
             .background(Color.White),
         verticalArrangement = Arrangement.Center,
@@ -44,7 +46,15 @@ fun VendorView(innerPadding: PaddingValues){
         label = { Text("Company Name") })
 
     Spacer(modifier = Modifier.height(16.dp))
-    Button(onClick = { /*TODO*/ }) {
-        Text(text = "Add Vendor") }
+        Row{
+            //Button to add a new vendor to the database
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Add Vendor") }
+            //Button to consult a vendor
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Consult Vendor")
+            }
+        }
     }
+
 }
