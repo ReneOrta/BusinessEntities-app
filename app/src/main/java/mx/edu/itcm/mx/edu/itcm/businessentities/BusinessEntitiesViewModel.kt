@@ -8,9 +8,7 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Store
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Vendor
 
 class BusinessEntitiesViewModel : ViewModel() {
-    enum class ValoresRegistro {
-        Indx, BE, Per, Stre, Vend;
-    }
+
 
     val businessEntitiesView= BusinessEntities()
     val personView= Person()
