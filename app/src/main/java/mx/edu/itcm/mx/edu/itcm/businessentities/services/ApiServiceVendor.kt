@@ -7,13 +7,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-private val retrofitVendor=Retrofit.Builder().baseUrl("")
+private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.68")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
 val vendorService= retrofitVendor.create(ApiServiceVendor::class.java)
 
 interface ApiServiceVendor{
-    @POST("vendor")
-    suspend fun postPerson(@Body Vendor: Vendor?): Call<Vendor?>?
+    @POST("vendors")
+    suspend fun postVendor(@Body Vendor: Vendor?): Call<Vendor?>?
 }

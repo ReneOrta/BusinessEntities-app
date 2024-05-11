@@ -8,13 +8,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-private val retrofitStore=Retrofit.Builder().baseUrl("")
+private val retrofitStore=Retrofit.Builder().baseUrl("http://172.16.188.41")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
 val storeService= retrofitStore.create(ApiServiceStore::class.java)
 
 interface ApiServiceStore{
-    @POST("person")
-    suspend fun postPerson(@Body sotore: Store?): Call<Store?>?
+    @POST("stores")
+    suspend fun postStore(@Body sotore: Store?): Call<Store?>?
 }

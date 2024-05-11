@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusinessCenter
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.BusinessCenter
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -49,22 +51,27 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.NavigationItem
 @Composable
 fun BEMenu(){
     val items= listOf(
-            NavigationItem(
-                title="Persons",
-                route= PersonScreen.route,
-                selectedIcon = Icons.Filled.Person,
-                unSelectedIcon = Icons.Outlined.Person
-            ),NavigationItem(
-    title="Stores",
-    route=Destination.StoreScreen.route,
-    selectedIcon = Icons.Filled.ShoppingCart,
-    unSelectedIcon = Icons.Outlined.ShoppingCart
-    ),NavigationItem(
-    title="Vendors",
-    route=Destination.VendorScreen.route,
-    selectedIcon = Icons.Filled.BusinessCenter,
-    unSelectedIcon = Icons.Outlined.BusinessCenter
-    )
+        NavigationItem(
+            "Home",
+            HomeScreeen.route,
+            Icons.Filled.Home,
+            Icons.Outlined.Home
+        )
+        ,NavigationItem(
+                "Persons",
+                PersonScreen.route,
+                Icons.Filled.Person,
+                Icons.Outlined.Person)
+        , NavigationItem(
+            "Stores",
+            Destination.StoreScreen.route,
+            Icons.Filled.ShoppingCart,
+            Icons.Outlined.ShoppingCart)
+        ,NavigationItem(
+            "Vendors",
+            Destination.VendorScreen.route,
+            Icons.Filled.BusinessCenter,
+            Icons.Outlined.BusinessCenter)
     )
     val drawerState= rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -93,25 +100,17 @@ fun BEMenu(){
                         Toast.makeText(context,"Share Clicked", Toast.LENGTH_LONG).show()
                     }else{
                         navController.navigate(currentNavigationItem.route){
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
                             navController.graph.startDestinationRoute?.let { startDestinationRoute ->
-                                // Pop up to the start destination, clearing the back stack
                                 popUpTo(startDestinationRoute) {
-                                    // Save the state of popped destinations
                                     saveState = true
                                 }
                             }
-
                             // Configure navigation to avoid multiple instances of the same destination
                             launchSingleTop = true
-
                             // Restore state when re-selecting a previously selected item
                             restoreState = true
                         }
                     }
-
                     scope.launch {
                         drawerState.close()
                     }

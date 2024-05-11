@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.Destination.*
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.HomeView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorView
@@ -16,7 +17,7 @@ fun NavigationHost(
     innerPadding: PaddingValues
 ){
     NavHost(navController =navController,
-        startDestination =Destination.PersonScreen.route) {
+        startDestination =Destination.HomeScreeen.route) {
         composable(Destination.PersonScreen.route){
             PersonView(innerPadding = innerPadding)
         }
@@ -25,6 +26,9 @@ fun NavigationHost(
         }
         composable(Destination.VendorScreen.route){
             VendorView(innerPadding = innerPadding)
+        }
+        composable(Destination.HomeScreeen.route){
+            HomeView(innerPadding = innerPadding)
         }
     }
 }
