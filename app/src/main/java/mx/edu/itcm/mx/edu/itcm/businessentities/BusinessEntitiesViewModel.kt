@@ -49,7 +49,7 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     //Function for Person Registration
     suspend fun registratePerson() {
-        personView.p_type=personType.value
+        personView.p_type=pTypeFormat(personType.value)
         personView.frs_name=personFrsName.value
         personView.lst_name=personLstName.value
         try{
@@ -83,4 +83,21 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
+    fun pTypeFormat(personType:String):String{
+        var pType:String=""
+        if (personType=="Store Contact"){
+            pType="SC"
+        }else if (personType=="Individual Customer"){
+                pType="IN"
+        }else if(personType=="Sales Person"){
+                    pType="SP"
+        }else if(personType=="Employe"){
+                    pType="EM"
+        }else if (personType=="Vendor Contact"){
+                    pType="VC"
+        }else if (personType=="GeneralContact"){
+                    pType="GC"
+        }
+        return pType
+    }
 }

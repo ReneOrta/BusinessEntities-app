@@ -1,5 +1,6 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities.navigation
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -14,7 +15,8 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorView
 @Composable
 fun NavigationHost(
     navController: NavHostController,
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
+    activity: ComponentActivity
 ){
     NavHost(navController =navController,
         startDestination =Destination.HomeScreeen.route) {
@@ -22,7 +24,7 @@ fun NavigationHost(
             PersonView(innerPadding = innerPadding)
         }
         composable(Destination.StoreScreen.route){
-            StoreView(innerPadding = innerPadding)
+            StoreView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.VendorScreen.route){
             VendorView(innerPadding = innerPadding)

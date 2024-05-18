@@ -1,5 +1,6 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities.views
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
@@ -49,7 +50,7 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.NavigationItem
 // Función para menú desplegable de BusinessEntities
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BEMenu(){
+fun BEMenu(activity: ComponentActivity){
     val items= listOf(
         NavigationItem(
             "Home",
@@ -135,13 +136,8 @@ fun BEMenu(){
                 })
             }
         ) {innerPadding->
-            NavigationHost(navController = navController, innerPadding = innerPadding)
+            NavigationHost(navController = navController, innerPadding = innerPadding,activity)
         }
     }
     }
 
-@Preview(showBackground = true)
-@Composable
-fun Default2Preview(){
-    BEMenu()
-}

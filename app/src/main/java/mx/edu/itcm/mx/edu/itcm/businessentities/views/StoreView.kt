@@ -1,5 +1,7 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities.views
 
+import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +32,7 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun StoreView(innerPadding: PaddingValues){
+fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
     val businessEntitiesViewModel: BusinessEntitiesViewModel = viewModel()
     var name by remember {businessEntitiesViewModel.storeName}
     Column(
@@ -41,7 +43,7 @@ fun StoreView(innerPadding: PaddingValues){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-       Text(text = "Registrar Tienda")
+       Text(text = "Store registration")
        Spacer(modifier = Modifier.height(16.dp))
        TextField(
            value = name,
@@ -52,8 +54,27 @@ fun StoreView(innerPadding: PaddingValues){
         Row {
             //  Button to add a new Store to the database
             Button(onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    businessEntitiesViewModel.registrateStore()
+                if (!isValidName(name)){
+                    //Creating a Toast to give a warning to the user
+                    val warning = Toast.makeText(
+                        activity,
+                        "The name of the store is required and its length must be less than 50 characters",
+                        Toast.LENGTH_LONG
+                    )
+                    //Showing the warning toast to the user
+                    warning.show()
+                }else{
+                    CoroutineScope(Dispatchers.IO).launch {
+                        businessEntitiesViewModel.registrateStore()
+                    }
+                    //Creating a Toast to let know the user that the store was succesfully registed
+                    val confirmation = Toast.makeText(
+                        activity,
+                        "The store was successfully registered",
+                        Toast.LENGTH_LONG
+                    )
+                    //Showing the register confirmation Toast
+                    confirmation.show()
                 }
             }) {
                 Text(text = "Add Store")
@@ -69,4 +90,12 @@ fun StoreView(innerPadding: PaddingValues){
         }
 
     }
+}
+
+
+fun isValidName(name:String):Boolean{
+    if (name != "" && name != null && name.length<=50)
+        return true
+    else
+        return false
 }

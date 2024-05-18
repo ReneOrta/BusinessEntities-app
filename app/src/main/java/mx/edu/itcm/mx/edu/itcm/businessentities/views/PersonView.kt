@@ -42,7 +42,6 @@ fun PersonView(innerPadding: PaddingValues){
     val businessEntitiesViewModel:BusinessEntitiesViewModel= viewModel()
     var frsName by remember{businessEntitiesViewModel.personFrsName}
     var lstName by remember{businessEntitiesViewModel.personLstName}
-    var type by remember{businessEntitiesViewModel.personType}
 
     val types: List<String> = listOf(
         "Store Contact",//Store contact
@@ -136,3 +135,4 @@ Box{
 }
 
 }
+
