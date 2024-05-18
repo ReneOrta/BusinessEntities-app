@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.68")
+private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.95:8081/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 

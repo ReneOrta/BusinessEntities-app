@@ -13,7 +13,9 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.BussinesEntities"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:usesCleartextTraffic="true"
+        >
         <activity
             android:name="mx.edu.itcm.mx.edu.itcm.businessentities.MainActivity"
             android:exported="true"
