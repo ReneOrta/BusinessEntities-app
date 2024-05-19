@@ -21,13 +21,13 @@ fun NavigationHost(
     NavHost(navController =navController,
         startDestination =Destination.HomeScreeen.route) {
         composable(Destination.PersonScreen.route){
-            PersonView(innerPadding = innerPadding)
+            PersonView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.StoreScreen.route){
             StoreView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.VendorScreen.route){
-            VendorView(innerPadding = innerPadding)
+            VendorView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.HomeScreeen.route){
             HomeView(innerPadding = innerPadding)

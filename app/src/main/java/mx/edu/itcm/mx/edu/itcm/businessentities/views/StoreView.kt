@@ -54,7 +54,7 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
         Row {
             //  Button to add a new Store to the database
             Button(onClick = {
-                if (!isValidName(name)){
+                if (!isValidStoreName(name)){
                     //Creating a Toast to give a warning to the user
                     val warning = Toast.makeText(
                         activity,
@@ -93,7 +93,7 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
 }
 
 
-fun isValidName(name:String):Boolean{
+private fun isValidStoreName(name:String):Boolean{
     if (name != "" && name != null && name.length<=50)
         return true
     else

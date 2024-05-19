@@ -83,21 +83,16 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
-    fun pTypeFormat(personType:String):String{
-        var pType:String=""
-        if (personType=="Store Contact"){
-            pType="SC"
-        }else if (personType=="Individual Customer"){
-                pType="IN"
-        }else if(personType=="Sales Person"){
-                    pType="SP"
-        }else if(personType=="Employe"){
-                    pType="EM"
-        }else if (personType=="Vendor Contact"){
-                    pType="VC"
-        }else if (personType=="GeneralContact"){
-                    pType="GC"
-        }
-        return pType
+    fun pTypeFormat(personType: String): String {
+        val typeMap = mapOf(
+            "Store Contact" to "SC",
+            "Individual Customer" to "IN",
+            "Sales Person" to "SP",
+            "Employe" to "EM",
+            "Vendor Contact" to "VC",
+            "General Contact" to "GC"
+        )
+        return typeMap[personType] ?: ""
     }
+
 }
