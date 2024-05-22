@@ -117,7 +117,7 @@ Column(
         //Button to consult a Person
         Button(onClick = {
             CoroutineScope(Dispatchers.IO).launch {
-                businessEntitiesViewModel.consultBE()
+                //businessEntitiesViewModel.consultBE()
             }
         }) {
             Text(text = "Consult Person")
@@ -146,7 +146,7 @@ Box{
                 text = { Text(type.toString()) },
                 onClick = {
                     isExpanded = false
-                    typeSelected = type
+                    typeSelected = type.toString()
                     typesText = type.toString()
                 }
             )

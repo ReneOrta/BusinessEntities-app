@@ -82,7 +82,7 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
             //Button to consult a Store
             Button(onClick = {
                 CoroutineScope(Dispatchers.IO).launch {
-                    businessEntitiesViewModel.consultBE()
+                  //  businessEntitiesViewModel.consultBE()
                 }
             }) {
                 Text(text = "Consult Store")

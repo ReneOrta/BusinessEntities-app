@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -21,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,7 +51,9 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
         TextField(
         value = accNumber,
         onValueChange = { accNumber=it },
-        label = { Text("Account Number") })
+        label = { Text("Account Number") },
+            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
+        )
 
     Spacer(modifier = Modifier.height(16.dp))
         TextField(
@@ -97,7 +101,7 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
             //Button to consult a vendor
             Button(onClick = {
                 CoroutineScope(Dispatchers.IO).launch {
-                    businessEntitiesViewModel.consultBE()
+                    //businessEntitiesViewModel.consultBE()
                 }
             }) {
                 Text(text = "Consult Vendor")
@@ -113,9 +117,9 @@ fun isValidVendorName(name:String):Boolean{
         return false
 }
 
-fun isValidAccNumber(accNumber:String):Boolean{
-    if (accNumber != "" && accNumber != null && accNumber.length==15)
+fun isValidAccNumber(accNumber: String): Boolean {
+    if (accNumber.isNotEmpty() && accNumber.length <= 15 && accNumber.all { !it.isLetter() || it.isUpperCase() }) {
         return true
-    else
-        return false
+    }
+    return false
 }

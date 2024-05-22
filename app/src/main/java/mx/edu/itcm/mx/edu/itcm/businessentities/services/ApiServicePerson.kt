@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-private val retrofitPerson=Retrofit.Builder().baseUrl("http://192.168.1.95:8081/")
+private val retrofitPerson=Retrofit.Builder().baseUrl("http://172.16.196.186:8081/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
@@ -19,12 +19,16 @@ interface ApiServicePerson{
     @POST("persons")
     suspend fun postPerson(@Body person: Person?): Call<Person?>?
 
+    @GET("persons")
+    suspend fun  getPersons():List<Person>
+
     @GET("persons/fname")
-    suspend fun getPersonByFirstName(@Query("personFsNm") fname : String): Person
+    suspend fun getPersonByFirstName(@Query("firstName") fname : String): List<Person>
 
     @GET("persons/lname")
-    suspend fun getPersonByLastName(@Query("personLstNm") lname : String): Person
+    suspend fun getPersonByLastName(@Query("lastName") lname : String): List<Person>
 
-    suspend fun getPersonByTyper (@Query("personType") personType : String): Person
+    @GET("persons/lname")
+    suspend fun getPersonByTyper (@Query("personType") personType : String): List<Person>
 
 }
