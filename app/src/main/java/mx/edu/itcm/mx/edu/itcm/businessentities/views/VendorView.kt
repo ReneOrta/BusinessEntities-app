@@ -46,7 +46,7 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-    Text(text = "Vendor")
+    Text(text = "Vendor Register")
     Spacer(modifier = Modifier.height(16.dp))
         TextField(
         value = accNumber,
@@ -98,14 +98,6 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
                 }
             }) {
                 Text(text = "Add Vendor") }
-            //Button to consult a vendor
-            Button(onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                    //businessEntitiesViewModel.consultBE()
-                }
-            }) {
-                Text(text = "Consult Vendor")
-            }
         }
     }
 }

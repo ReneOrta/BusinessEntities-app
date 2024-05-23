@@ -61,7 +61,7 @@ Column(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
-    Text(text = "Persons")
+    Text(text = "Person Register")
     Spacer(modifier = Modifier.height(16.dp))
     createPersonTypeDropDown(types,businessEntitiesViewModel)
     Spacer(modifier = Modifier.height(16.dp))
@@ -113,14 +113,6 @@ Column(
         }
     }) {
             Text(text = "Add Person")
-        }
-        //Button to consult a Person
-        Button(onClick = {
-            CoroutineScope(Dispatchers.IO).launch {
-                //businessEntitiesViewModel.consultBE()
-            }
-        }) {
-            Text(text = "Consult Person")
         }
     }
 }

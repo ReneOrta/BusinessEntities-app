@@ -4,8 +4,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,13 +44,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Store
+import mx.edu.itcm.mx.edu.itcm.bussinesentities.R
 
 @Composable
 fun StoreList(
     stores: List<Store>,
     onItemClick: (Store) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         items(stores) { store ->
             StoreListItem(store = store, onItemClick = onItemClick)
         }
@@ -59,32 +65,34 @@ fun StoreListItem(
     store: Store,
     onItemClick: (Store) -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(store) }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            //.padding(16.dp)
+            .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
     ) {
         Column {
             //Showing the name of the
             Text(
-                text = store.businessEntityID.toString(),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
+                text = store.businessentityid.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                color= MaterialTheme.colorScheme.onSecondaryContainer
             )
             //Showing the name of the store
             Text(
                 text = store.name,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
+                style = MaterialTheme.typography.bodyLarge,
+                color= MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
     }
 }
 
 @Composable
-fun StoreSearchView(activity: ComponentActivity) {
+fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
     val storeViewModel: BusinessEntitiesViewModel= viewModel()
     val storeState by storeViewModel.storeState
     val searchText = remember { mutableStateOf("") }
@@ -92,33 +100,52 @@ fun StoreSearchView(activity: ComponentActivity) {
         it.name.contains(searchText.value, ignoreCase = true)
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-
-        Row {
-            OutlinedTextField(
-                value = searchText.value,
-                onValueChange = { searchText.value = it },
-                label = { Text("Search") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-            IconButton(
-                onClick = { /*TODO*/ }) {
-                Icon(Icons.Filled.Search,"Icono de busqueda" )
+    Column(modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        when{
+            !storeState.loading&&storeState.error==null->{
+                Row(Modifier.padding(4.dp)) {
+                    TextField(
+                        value = searchText.value,
+                        onValueChange = { searchText.value = it },
+                        label = { Text("Search") }
+                    )
+                    IconButton(
+                        onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Search,"Icono de busqueda" )
+                    }
+                }
+                StoreList(
+                    stores =
+                    if(searchText.value.toString()==""){
+                        storeState.store
+                    }else{
+                        filteredStores
+                    },
+                    onItemClick = { selectedStore ->
+                        Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
+            storeState.error!=null->{
+                Text("Fallo de comunicación con el servicio, intente más tarde")
+                val toast = Toast.makeText(
+                    activity,
+                    "ERROR OCCURRED: $storeState.error",
+                    Toast.LENGTH_LONG
+                )
+                toast.show()
+            }
+
+            else -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
+            }
+
         }
 
-        StoreList(
-            stores =
-            if(searchText.value.toString()==""){
-                storeState.store
-            }else{
-                filteredStores
-            },
-            onItemClick = { selectedStore ->
-                Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
-            }
-        )
     }
 }

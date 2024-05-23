@@ -62,7 +62,7 @@ fun PersonListItem(
         Column {
             //Showing the name of the
             Text(
-                text = person.businessEntityID.toString(),
+                text = person.businessentityid.toString(),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )

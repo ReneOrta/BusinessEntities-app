@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -22,9 +23,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +44,15 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
             .fillMaxSize()
             .background(Color.White),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-       Text(text = "Store registration")
+       Text(
+           text = "Store Register",
+           color = MaterialTheme.colorScheme.surface,
+           style = MaterialTheme.typography.titleLarge,
+           fontSize =30.sp,
+           fontWeight = FontWeight.Bold
+       )
        Spacer(modifier = Modifier.height(16.dp))
        TextField(
            value = name,
@@ -77,15 +86,10 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
                     confirmation.show()
                 }
             }) {
-                Text(text = "Add Store")
-            }
-            //Button to consult a Store
-            Button(onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
-                  //  businessEntitiesViewModel.consultBE()
-                }
-            }) {
-                Text(text = "Consult Store")
+                Text(
+                    text = "Add Store",
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 

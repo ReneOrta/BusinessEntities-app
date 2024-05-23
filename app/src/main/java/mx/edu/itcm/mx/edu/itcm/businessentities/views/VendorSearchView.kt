@@ -2,6 +2,7 @@ package mx.edu.itcm.mx.edu.itcm.businessentities.views
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,12 +57,13 @@ fun VendorListItem(
             .fillMaxWidth()
             .clickable { onItemClick(vendor) }
             .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Absolute.Center
     ) {
         Column {
             //Showing the id
             Text(
-                text = vendor.businessEntityID.toString(),
+                text = vendor.businessentityid.toString(),
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.weight(1f)
             )
