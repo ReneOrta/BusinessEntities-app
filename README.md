@@ -11,7 +11,7 @@ This module was developed for the NATIVE MOBILE PROGRAMMING course, taught by th
 
 ![image](https://github.com/ReneOrta/BusinessEntities-app/assets/87352628/c3ec47ed-33d5-4bf8-8c1f-54da57b83241)
 
-<p>The project was developed in Android Studio, using the Kotlin language along with the Jetpack Compose UI framework.</p>
+<p>The project was developed in Android Studio, using Kotlin with the Jetpack Compose UI framework.</p>
   
 
 <img src="https://github.com/ReneOrta/BusinessEntities-app/assets/87352628/aa21ec84-4ebe-4453-9b39-29c871e6ae2a" width="450" height="250" />
