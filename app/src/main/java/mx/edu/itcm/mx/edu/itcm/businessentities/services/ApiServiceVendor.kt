@@ -11,7 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.68:8080/")
+private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.68:8081/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
@@ -25,8 +25,8 @@ interface ApiServiceVendor{
     suspend fun  getVendor():List<Vendor>
 
     @GET("vendors/vendor-account-number")
-    suspend fun getVendorAccount (@Query("accountNumber") accountNumber : String): Vendor
+    suspend fun getVendorAccount (@Query("vendorAccountNumber") accountNumber : String): Vendor
 
-    @GET("vendors/vendor-name")
-    suspend fun getVendorName (@Query("name") name : String): List<Vendor>
+    @GET("vendors/vendor-nam")
+    suspend fun getVendorName (@Query("vendorName") name : String): List<Vendor>
 }

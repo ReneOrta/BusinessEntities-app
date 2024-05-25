@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -33,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +64,13 @@ Column(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally
 ) {
-    Text(text = "Person Register")
+    Text(
+        text = "Person Register",
+        color = MaterialTheme.colorScheme.primary,
+        style = MaterialTheme.typography.titleLarge,
+        fontSize =30.sp,
+        fontWeight = FontWeight.Bold
+    )
     Spacer(modifier = Modifier.height(16.dp))
     createPersonTypeDropDown(types,businessEntitiesViewModel)
     Spacer(modifier = Modifier.height(16.dp))

@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.CoroutineScope
@@ -69,74 +70,80 @@ fun StoreListItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(store) }
-            //.padding(16.dp)
+            .padding(5.dp)
             .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
         Column {
-            //Showing the name of the
+            //Showing the ID of the store
             Text(
-                text = store.businessentityid.toString(),
+                text ="BusinessEntityID:"+store.businessEntityID.toString(),
                 style = MaterialTheme.typography.bodyLarge,
-                color= MaterialTheme.colorScheme.onSecondaryContainer
+                color= MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold
             )
             //Showing the name of the store
             Text(
-                text = store.name,
+                text ="Name:"+store.name,
                 style = MaterialTheme.typography.bodyLarge,
-                color= MaterialTheme.colorScheme.onSecondaryContainer
+                color= MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold
             )
         }
     }
 }
 
+
 @Composable
 fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
-    val storeViewModel: BusinessEntitiesViewModel= viewModel()
+    val storeViewModel: BusinessEntitiesViewModel = viewModel()
     val storeState by storeViewModel.storeState
     val searchText = remember { mutableStateOf("") }
-    val filteredStores = storeState.store.filter{
-        it.name.contains(searchText.value, ignoreCase = true)
-    }
+    var query by remember {storeViewModel.storeQuery}
 
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        when{
-            !storeState.loading&&storeState.error==null->{
+        when {
+            !storeState.loading && storeState.error == null -> {
                 Row(Modifier.padding(4.dp)) {
                     TextField(
-                        value = searchText.value,
-                        onValueChange = { searchText.value = it },
+                        value = query,
+                        onValueChange = {
+                            query = it
+                            if (query.isEmpty()) {
+                                storeViewModel.fetchStores()
+                            } else {
+                                storeViewModel.fetchEntityDebounced()
+                            }
+                        },
                         label = { Text("Search") }
                     )
                     IconButton(
-                        onClick = { /*TODO*/ }) {
-                        Icon(Icons.Filled.Search,"Icono de busqueda" )
+                        onClick = {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                storeViewModel.consultStoreName()
+                            }
+                        }) {
+                        Icon(Icons.Filled.Search, "Icono de búsqueda")
                     }
                 }
                 StoreList(
-                    stores =
-                    if(searchText.value.toString()==""){
-                        storeState.store
-                    }else{
-                        filteredStores
-                    },
+                    stores = storeState.store,
                     onItemClick = { selectedStore ->
                         Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
                     }
                 )
             }
-            storeState.error!=null->{
+            storeState.error != null -> {
                 Text("Fallo de comunicación con el servicio, intente más tarde")
                 val toast = Toast.makeText(
                     activity,
-                    "ERROR OCCURRED: $storeState.error",
+                    "ERROR OCCURRED: ${storeState.error}",
                     Toast.LENGTH_LONG
                 )
                 toast.show()
             }
-
             else -> {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -144,8 +151,6 @@ fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                     CircularProgressIndicator(Modifier.align(Alignment.Center))
                 }
             }
-
         }
-
     }
 }

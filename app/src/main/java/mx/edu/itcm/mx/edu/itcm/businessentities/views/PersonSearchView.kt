@@ -1,9 +1,14 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities.views
 
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -29,8 +35,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Person
 
@@ -52,97 +62,134 @@ fun PersonListItem(
     person: Person,
     onItemClick: (Person) -> Unit
 ) {
-    Row(
+    val viewModel:BusinessEntitiesViewModel= viewModel()
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onItemClick(person) }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
+            .padding(5.dp)
+            .border(2.dp, MaterialTheme.colorScheme.onPrimaryContainer),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
+    ){
+        Column(Modifier.padding(15.dp)) {
             //Showing the name of the
             Text(
-                text = person.businessentityid.toString(),
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
+                text = person.businessEntityID.toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                color= MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold
             )
             //Showing the name of the store
             Text(
-                text = person.personType,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
+                text = viewModel.inversePTypeFormat(person.personType),
+                style = MaterialTheme.typography.bodyLarge,
+                color= MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold
             )
             Text(
                 text = person.firstName+" "+person.lastName,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)
+                style = MaterialTheme.typography.bodyLarge,
+                color= MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold
             )
         }
     }
 }
 
 @Composable
-fun PersonSearchView(){
-    val businessEntitiesViewModel:BusinessEntitiesViewModel= viewModel()
-    var query by remember{businessEntitiesViewModel.personQuery}
-    val options: List<String> = listOf(
-        "Person type",
-        "First name",
-        "Last name"
-    )
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row {
+fun PersonSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
+    val businessEntitiesViewModel: BusinessEntitiesViewModel = viewModel()
+    var query by remember { businessEntitiesViewModel.personQuery }
+    val options = listOf("Person type", "First name", "Last name")
+    val personViewModel: BusinessEntitiesViewModel = viewModel()
+    val personState by personViewModel.personState
 
-            personFilterDropDown( options, businessEntitiesViewModel)
 
-            TextField(value = query ,
-                onValueChange ={query=it}
-            )
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when {
+            personState.loading && personState.error == null -> {
+                Row(Modifier.padding(4.dp)) {
+                    personFilterDropDown(options = options, businessEntitiesViewModel = personViewModel)
+                    TextField(
+                        value = query,
+                        onValueChange = { query = it },
+                        label = { Text("Search") }
+                    )
+                    IconButton(
+                        onClick = {
+                                when (businessEntitiesViewModel.personFilterOption.value) {
+                                    "Person type" ->{
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            businessEntitiesViewModel.consultPersonType()
+                                        }
+                                    }
+                                    "First name" -> {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            businessEntitiesViewModel.consultPersonFirstName()
+                                        }
+                                    }
+                                    "Last name" -> {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            businessEntitiesViewModel.consultPersonLastName()
+                                        }
+                                    }
+                                }
 
-            IconButton(onClick = {
-                if (businessEntitiesViewModel.personFilterOption.value == "Person type"){
-
-                }else if (businessEntitiesViewModel.personFilterOption.value=="First name"){
-
-                }else if (businessEntitiesViewModel.personFilterOption.value=="Last name"){
-
+                        }
+                    ) {
+                        Icon(Icons.Filled.Search, "Search Icon")
+                    }
                 }
-            }) {
-             Icon( Icons.Filled.Search , contentDescription =" Icono de busqueda" )
+                PersonList(
+                    persons = personState.person,
+                    onItemClick = { selectedPerson ->
+                        Toast.makeText(activity, "Selected: ${selectedPerson.firstName} ${selectedPerson.lastName}", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+            personState.error != null -> {
+                Text("Fallo de comunicación con el servicio, intente más tarde")
+                Toast.makeText(activity, "ERROR OCCURRED: ${personState.error}", Toast.LENGTH_LONG).show()
+            }
+            else -> {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
             }
         }
     }
 }
 
 @Composable
-fun personFilterDropDown(options:List<String>,businessEntitiesViewModel: BusinessEntitiesViewModel){
+fun personFilterDropDown(options: List<String>, businessEntitiesViewModel: BusinessEntitiesViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
     var optionSelected by remember { businessEntitiesViewModel.personFilterOption }
     var optionText by remember { mutableStateOf("Filter options") }
 
-    Box{
+    Box {
         Button(onClick = { isExpanded = true }) {
             Text(text = optionText)
-            Icon(
-                Icons.Default.ArrowDropDown,
-                contentDescription = null )
+            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
         }
-        DropdownMenu(expanded = isExpanded, onDismissRequest = { isExpanded = false }, modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = 2.dp)) {
-            for (option in options) {
+        DropdownMenu(
+            expanded = isExpanded,
+            onDismissRequest = { isExpanded = false },
+            modifier = Modifier.fillMaxWidth().padding(all = 2.dp)
+        ) {
+            options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option.toString()) },
+                    text = { Text(option) },
                     onClick = {
                         isExpanded = false
-                        optionSelected = option.toString()
-                        optionText = option.toString()
+                        optionSelected = option
+                        optionText = option
                     }
                 )
             }
-            println("${options.size} types")
-            Log.i("INFO_DEBUG", "${options.size} types")
         }
     }
-
 }

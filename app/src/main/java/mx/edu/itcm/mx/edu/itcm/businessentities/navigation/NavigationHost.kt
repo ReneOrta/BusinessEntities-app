@@ -12,6 +12,7 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonSearchView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreSearchView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorSearchView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorView
 
 @Composable
@@ -26,7 +27,7 @@ fun NavigationHost(
             PersonView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.PersonSearchScreen.route){
-            PersonSearchView()
+            PersonSearchView(innerPadding = innerPadding,activity = activity)
         }
         composable(Destination.StoreRegistrationScreen.route){
             StoreView(innerPadding = innerPadding, activity = activity)
@@ -36,6 +37,9 @@ fun NavigationHost(
         }
         composable(Destination.VendorRegistrationScreen.route){
             VendorView(innerPadding = innerPadding, activity = activity)
+        }
+        composable(Destination.VendorSearchScreen.route){
+            VendorSearchView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.HomeScreeen.route){
             HomeView(innerPadding = innerPadding)

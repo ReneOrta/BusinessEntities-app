@@ -7,6 +7,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.BusinessEntities
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Person
@@ -18,21 +20,13 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.services.vendorService
 
 class BusinessEntitiesViewModel : ViewModel() {
 
-
-    private val _personState= mutableStateOf(PersonState())
-    var personState: State<PersonState> = _personState
-    private val _storeState=mutableStateOf(StoreState())
-    var storeState: State<StoreState> = _storeState
-    private val _vendorState= mutableStateOf(VendorState())
-    var vendorState:State<VendorState> = _vendorState
     val businessEntitiesView= BusinessEntities()
-
-    val personView= Person()
-    val storeView= Store()
-    val vendorView= Vendor()
-
+    private var debounceJob: Job? = null
 
     //Person variables
+    val personView= Person()
+    private val _personState= mutableStateOf(PersonState())
+    var personState: State<PersonState> = _personState
     var personType=mutableStateOf("")//Person Type
     var personFrsName=mutableStateOf("")//Person First Name
     var personLstName=mutableStateOf("")//Person Last Name
@@ -40,9 +34,16 @@ class BusinessEntitiesViewModel : ViewModel() {
     var personQuery= mutableStateOf("")
 
     //Store Variables
+    val storeView= Store()
+    private val _storeState=mutableStateOf(StoreState())
+    var storeState: State<StoreState> = _storeState
     var storeName=mutableStateOf("")//Store Name
+    var storeQuery= mutableStateOf("")
 
     //Vendor Variables
+    val vendorView= Vendor()
+    private val _vendorState= mutableStateOf(VendorState())
+    var vendorState:State<VendorState> = _vendorState
     var vendorAccNum=mutableStateOf("")//Vendor Acount Number
     var vendorName=mutableStateOf("")//Vendor Company Name
     var vendorFilterOption= mutableStateOf("")
@@ -77,7 +78,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
-    private fun fetchStores(){
+     fun fetchStores(){
         viewModelScope.launch{
             try{
                 val response= storeService.getStores()
@@ -88,7 +89,7 @@ class BusinessEntitiesViewModel : ViewModel() {
                 )
                 println("stores fetched")
             }catch (e:Exception){
-                _personState.value=_personState.value.copy(
+                _storeState.value=_storeState.value.copy(
                     loading = false,
                     error="Error fetching Stores ${e.message}"
                 )
@@ -97,7 +98,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
-    private fun fetchVendors(){
+     fun fetchVendors(){
         viewModelScope.launch{
             try{
                 val response= vendorService.getVendor()
@@ -150,6 +151,65 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Person registration failed: ${e.message}")
         }
     }
+    //Function for person's consult using the Person Type as a filter
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun consultPersonType(){
+        if(personQuery.value!= ""){
+            try {
+                val response= personService.getPersonByType(personQuery.value)
+                _personState.value=_personState.value.copy(
+                    person=response,
+                    loading=false,
+                    error=null
+                )
+            }catch (e: Exception){
+                _personState.value=_personState.value.copy(
+                    loading = false,
+                    error="Error fetching Stores ${e.message}"
+                )
+                println("stores fetch failed: ${e.message}")
+            }
+        }
+    }
+    //Function for person's consult using the Person FirstName as a filter
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun consultPersonFirstName(){
+        if(personQuery.value!= ""){
+            try {
+                val response= personService.getPersonByFirstName(personQuery.value)
+                _personState.value=_personState.value.copy(
+                    person=response,
+                    loading=false,
+                    error=null
+                )
+            }catch (e: Exception){
+                _personState.value=_personState.value.copy(
+                    loading = false,
+                    error="Error fetching Stores ${e.message}"
+                )
+                println("stores fetch failed: ${e.message}")
+            }
+        }
+    }
+    //Function for person's consult using the Person LastName as a filter
+    suspend fun consultPersonLastName(){
+        if(personQuery.value!= ""){
+            try {
+                val response= personService.getPersonByLastName(personQuery.value)
+                _personState.value=_personState.value.copy(
+                    person=response,
+                    loading=false,
+                    error=null
+                )
+            }catch (e: Exception){
+                _personState.value=_personState.value.copy(
+                    loading = false,
+                    error="Error fetching Stores ${e.message}"
+                )
+                println("stores fetch failed: ${e.message}")
+            }
+        }
+    }
 
     //Function for Store Registration
     @RequiresApi(Build.VERSION_CODES.O)
@@ -162,32 +222,26 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Store registration failed: ${e.message}")
         }
     }
-
+    //Function for consult the a Store using the store's name as a filter
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun  consultStore(){
-        if(storeState.value != null){
+    suspend fun consultStoreName() {
+        if(storeQuery.value!= ""){
             try{
-                val response= storeService.getStores()
+                val response= storeService.getStoreName(storeQuery.value)
                 _storeState.value=_storeState.value.copy(
                     store=response,
                     loading=false,
                     error=null
                 )
-                println("stores fetched")
-            }catch (e:Exception){
-                _personState.value=_personState.value.copy(
+                println("Stores fetched: ${response.toString()}")
+            }catch (e: Exception){
+                _storeState.value=_storeState.value.copy(
                     loading = false,
                     error="Error fetching Stores ${e.message}"
                 )
                 println("stores fetch failed: ${e.message}")
             }
         }
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun consultStoreName() {
-
     }
 
     //Function for Vendor Registration
@@ -202,7 +256,56 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Vendor registration failed: ${e.message}")
         }
     }
+    //Function for vendor consult using the account number as a filter
+    suspend fun consultVendorAccount() {
+        if (vendorQuery.value != "") {
+            try {
+                val response = vendorService.getVendorAccount(vendorQuery.value)
+                _vendorState.value = _vendorState.value.copy(
+                    vendor = listOf(response),
+                    loading = false,
+                    error = null
+                )
+                println("vendors fetched")
+            } catch (e: Exception) {
+                _vendorState.value = _vendorState.value.copy(
+                    loading = false,
+                    error = "Error fetching Vendors ${e.message}"
+                )
+                println("vendors fetch failed: ${e.message}")
+            }
+        }
+    }
 
+    //Function for vendor consult using the Company's Name as a filter
+    suspend fun  consultVendorCompanyName(){
+        if(vendorQuery.value!= ""){
+            try {
+                val response = vendorService.getVendorName(vendorQuery.value)
+                _vendorState.value = _vendorState.value.copy(
+                    vendor = response,
+                    loading = false,
+                    error = null
+                )
+                println("vendors fetched")
+            } catch (e: Exception) {
+                _vendorState.value = _vendorState.value.copy(
+                    loading = false,
+                    error = "Error fetching Vendors ${e.message}"
+                )
+                println("vendors fetch failed: ${e.message}")
+            }
+        }
+    }
+
+
+    fun fetchEntityDebounced() {
+        debounceJob?.cancel()
+        debounceJob = viewModelScope.launch {
+            delay(300) // 300ms debounce time
+            fetchStores()
+        }
+    }
 
     fun pTypeFormat(personType:String):String{
         var pType:String=""
@@ -221,5 +324,24 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
         return pType
     }
+
+    fun inversePTypeFormat(personType:String):String{
+        var pType:String=""
+        if (personType=="SCStore Contact"){
+            pType="Store Contact"
+        }else if (personType=="IN"){
+            pType="Individual Customer"
+        }else if(personType=="SP"){
+            pType="Sales Person"
+        }else if(personType=="EM"){
+            pType="Employe"
+        }else if (personType=="VC"){
+            pType="Vendor Contact"
+        }else if (personType=="GC"){
+            pType="General Contact"
+        }
+        return pType
+    }
+
 
 }

@@ -48,7 +48,7 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
     ) {
        Text(
            text = "Store Register",
-           color = MaterialTheme.colorScheme.surface,
+           color = MaterialTheme.colorScheme.primary,
            style = MaterialTheme.typography.titleLarge,
            fontSize =30.sp,
            fontWeight = FontWeight.Bold
