@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 private val retrofitVendor=Retrofit.Builder().baseUrl("http://192.168.1.68:8081/")
@@ -24,9 +25,12 @@ interface ApiServiceVendor{
     @GET("vendors")
     suspend fun  getVendor():List<Vendor>
 
-    @GET("vendors/vendor-account-number")
-    suspend fun getVendorAccount (@Query("vendorAccountNumber") accountNumber : String): Vendor
+    @GET("vendors/vendor_account_number")
+    suspend fun getVendorAccount (@Query("vendorAccountNumber") vendorAccountNumber : String): Vendor
 
-    @GET("vendors/vendor-nam")
-    suspend fun getVendorName (@Query("vendorName") name : String): List<Vendor>
+    @GET("vendors/vendor_name")
+    suspend fun getVendorName (@Query("vendorName") vendorName : String): List<Vendor>
+
+    @PUT("vendors")
+    suspend fun putVendors(@Body newVendor: Vendor?): Call<Vendor?>?
 }

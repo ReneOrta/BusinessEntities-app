@@ -1,5 +1,4 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities
-
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
@@ -22,6 +21,7 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     val businessEntitiesView= BusinessEntities()
     private var debounceJob: Job? = null
+    var businesEntityID=mutableStateOf(0)
 
     //Person variables
     val personView= Person()
@@ -151,6 +151,19 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Person registration failed: ${e.message}")
         }
     }
+    //Function to update a person
+    suspend fun updatePerson(){
+        personView.businessEntityID=businesEntityID.value
+        personView.personType=personType.value
+        personView.firstName=personFrsName.value
+        personView.lastName=personLstName.value
+        try{
+            println("Trying person data update: ${personView.toString()}")
+            personService.putPerson(personView)
+        }catch(e: Exception){
+            println("Store data update failed: ${e.message}")
+        }
+    }
     //Function for person's consult using the Person Type as a filter
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun consultPersonType(){
@@ -222,6 +235,19 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Store registration failed: ${e.message}")
         }
     }
+
+    //Function to update a person
+    suspend fun updateStore(){
+        storeView.businessEntityID=businesEntityID.value
+        storeView.name=storeName.value
+        try{
+            println("Trying store data update: ${storeView.toString()}")
+            storeService.putStore(storeView)
+        }catch(e: Exception){
+            println("Store data update failed: ${e.message}")
+        }
+    }
+
     //Function for consult the a Store using the store's name as a filter
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun consultStoreName() {
@@ -256,6 +282,21 @@ class BusinessEntitiesViewModel : ViewModel() {
             println("Vendor registration failed: ${e.message}")
         }
     }
+
+    //Function to update a person
+    suspend fun updateVendor(){
+        vendorView.businessEntityID=businesEntityID.value
+        vendorView.accountNumber=vendorAccNum.value
+        vendorView.name=storeName.value
+        try{
+            println("Trying store data update: ${vendorView.toString()}")
+            vendorService.putVendors(vendorView)
+        }catch(e: Exception){
+            println("Store data update failed: ${e.message}")
+        }
+    }
+
+
     //Function for vendor consult using the account number as a filter
     suspend fun consultVendorAccount() {
         if (vendorQuery.value != "") {
@@ -324,7 +365,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
         return pType
     }
-
+    
     fun inversePTypeFormat(personType:String):String{
         var pType:String=""
         if (personType=="SCStore Contact"){
@@ -342,6 +383,5 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
         return pType
     }
-
 
 }

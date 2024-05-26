@@ -8,6 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 private val retrofitStore=Retrofit.Builder().baseUrl("http://192.168.1.68:8081/")
@@ -25,4 +26,7 @@ interface ApiServiceStore{
 
     @GET("stores/name")
     suspend fun getStoreName (@Query("storeName") name : String): List<Store>
+
+    @PUT("stores")
+    suspend fun putStore(@Body newStore: Store?): Call<Store?>?
 }
