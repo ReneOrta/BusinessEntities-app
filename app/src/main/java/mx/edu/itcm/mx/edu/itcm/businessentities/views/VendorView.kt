@@ -36,10 +36,27 @@ import kotlinx.coroutines.launch
 import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 
 @Composable
-fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
-    val businessEntitiesViewModel: BusinessEntitiesViewModel = viewModel()
-    var accNumber by remember { businessEntitiesViewModel.vendorAccNum}
-    var name by remember {businessEntitiesViewModel.vendorName}
+fun VendorBaseView(viewModel: BusinessEntitiesViewModel ){
+    var accNumber by remember { viewModel.vendorAccNum}
+    var name by remember {viewModel.vendorName}
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value = accNumber,
+        onValueChange = { accNumber=it },
+        label = { Text("Account Number") },
+        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value = name,
+        onValueChange = { name=it },
+        label = { Text("Company Name") })
+}
+
+@Composable
+fun VendorRegistrationView(innerPadding: PaddingValues, activity: ComponentActivity){
+    val viewModel: BusinessEntitiesViewModel = viewModel()
+
     Column(
         modifier = Modifier
             .padding(innerPadding)
@@ -56,25 +73,14 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
         fontSize =30.sp,
         fontWeight = FontWeight.Bold
         )
-    Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-        value = accNumber,
-        onValueChange = { accNumber=it },
-        label = { Text("Account Number") },
-            keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
-        )
+        VendorBaseView(viewModel = viewModel)
 
-    Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-        value = name,
-        onValueChange = { name=it },
-        label = { Text("Company Name") })
+        Spacer(modifier = Modifier.height(16.dp))
 
-    Spacer(modifier = Modifier.height(16.dp))
-        Row{
+
             //Button to add a new vendor to the database
             Button(onClick = {
-                if (!isValidVendorName(name)){
+                if (!isValidVendorName(viewModel.vendorName.value)){
                     //Creating a Toast to give a warning to the user about the company's name format requirements
                     val nameWarning = Toast.makeText(
                         activity,
@@ -83,7 +89,7 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
                     )
                     //Showing the warning toast to the user
                     nameWarning.show()
-                }else if (!isValidAccNumber(accNumber)){
+                }else if (!isValidAccNumber(viewModel.vendorAccNum.value)){
                     //Creating a Toast to give a warning to the user about the account number format requirements
                     val accWarning = Toast.makeText(
                         activity,
@@ -94,7 +100,7 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
                     accWarning.show()
                 }else{
                     CoroutineScope(Dispatchers.IO).launch {
-                        businessEntitiesViewModel.registrateVendor()
+                        viewModel.registrateVendor()
                 }
                     //Creating a Toast to let know the user that the new vendor was succesfully registed
                     val confirmation = Toast.makeText(
@@ -107,7 +113,79 @@ fun VendorView(innerPadding: PaddingValues, activity: ComponentActivity){
                 }
             }) {
                 Text(text = "Add Vendor") }
-        }
+
+    }
+}
+
+
+@Composable
+fun VendorUpdateView(innerPadding: PaddingValues, activity: ComponentActivity){
+    val viewModel: BusinessEntitiesViewModel = viewModel()
+
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Vendor Data Update",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize =30.sp,
+            fontWeight = FontWeight.Bold
+        )
+        BusinessEntityID(viewModel = viewModel)//This functions is located in the BEMenuView.kt archive
+
+        VendorBaseView(viewModel = viewModel)
+
+        //Button to update the data of a Vendor
+        Button(onClick = {
+
+            if (!isValidID(viewModel.businesEntityID.value)){
+                //Creating a Toast to give a warning to the user about the ID format
+                val idWarning=Toast.makeText(
+                    activity,
+                    "The BusinessEntityID is required and must be an integer",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning to the user
+                idWarning.show()
+            }else if (!isValidVendorName(viewModel.vendorName.value)){
+                //Creating a Toast to give a warning to the user about the company's name format requirements
+                val nameWarning = Toast.makeText(
+                    activity,
+                    "The company name is required and its length must be less than 50 characters",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning toast to the user
+                nameWarning.show()
+            }else if (!isValidAccNumber(viewModel.vendorAccNum.value)){
+                //Creating a Toast to give a warning to the user about the account number format requirements
+                val accWarning = Toast.makeText(
+                    activity,
+                    "The account number is required and its length must be of 15 characters",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning toast to the user
+                accWarning.show()
+            }else{
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.updateVendor()
+                }
+                //Creating a Toast to let know the user that the new vendor was succesfully registed
+                val confirmation = Toast.makeText(
+                    activity,
+                    "The data of the vendor was successfully updated",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the register confirmation Toast
+                confirmation.show()
+            }
+        }) {
+            Text(text = "Update Vendor") }
     }
 }
 

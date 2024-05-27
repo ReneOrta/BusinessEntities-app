@@ -43,10 +43,27 @@ import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import kotlinx.coroutines.launch
 
 @Composable
+fun PersonBaseView(viewModel: BusinessEntitiesViewModel){
+    var frsName by remember {viewModel.personFrsName}
+    var lstName by remember {viewModel.personLstName}
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value =frsName,
+        onValueChange = { frsName=it },
+        label = { Text("First Name") }
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value = lstName,
+        onValueChange = { lstName=it },
+        label = { Text("Last Name") }
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
 fun PersonView(innerPadding: PaddingValues, activity: ComponentActivity){
-    val businessEntitiesViewModel:BusinessEntitiesViewModel= viewModel()
-    var frsName by remember{businessEntitiesViewModel.personFrsName}
-    var lstName by remember{businessEntitiesViewModel.personLstName}
+    val viewModel:BusinessEntitiesViewModel= viewModel()
 
     val types: List<String> = listOf(
         "Store Contact",//Store contact
@@ -72,24 +89,12 @@ Column(
         fontWeight = FontWeight.Bold
     )
     Spacer(modifier = Modifier.height(16.dp))
-    createPersonTypeDropDown(types,businessEntitiesViewModel)
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-        value =frsName,
-        onValueChange = { frsName=it },
-        label = { Text("First Name") }
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    TextField(
-        value = lstName,
-        onValueChange = { lstName=it },
-        label = { Text("Last Name") }
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Row {
+    createPersonTypeDropDown(types,viewModel)
+    PersonBaseView(viewModel = viewModel)
+
         //Button to add a new person to the database
         Button(onClick ={
-        if (!isValidPersonName(frsName)){
+        if (!isValidPersonName(viewModel.personFrsName.value)){
             //Creating a Toast to give a warning to the user about the person's first name format requirements
             val frsNameWarning = Toast.makeText(
                 activity,
@@ -98,7 +103,7 @@ Column(
             )
             //Showing the warning toast to the user
             frsNameWarning.show()
-        }else if (!isValidPersonName(lstName)){
+        }else if (!isValidPersonName(viewModel.personLstName.value)){
             //Creating a Toast to give a warning to the user about the person's last name format requirements
             val lstNameWarning = Toast.makeText(
                 activity,
@@ -109,7 +114,7 @@ Column(
             lstNameWarning.show()
         }else{
             CoroutineScope(Dispatchers.IO).launch {
-                businessEntitiesViewModel.registratePerson()
+                viewModel.registratePerson()
             }
             //Creating a Toast to let know the user that the new person was succesfully registed
             val confirmation = Toast.makeText(
@@ -123,8 +128,88 @@ Column(
     }) {
             Text(text = "Add Person")
         }
-    }
 }
+}
+
+@Composable
+fun PersonUpdateView(innerPadding: PaddingValues, activity: ComponentActivity){
+    val viewModel:BusinessEntitiesViewModel= viewModel()
+
+    val types: List<String> = listOf(
+        "Store Contact",//Store contact
+        "Individual Customer",//Individual customer
+        "Sales Person",//Sales person
+        "Employe",//Employe
+        "Vendor Contact",//Vendor contact
+        "General Contact"//General contact
+    )
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Person Data Update",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize =30.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        BusinessEntityID(viewModel = viewModel)//This functions is located in the BEMenuView.kt archive
+        createPersonTypeDropDown(types,viewModel)
+        PersonBaseView(viewModel = viewModel)
+
+        //Button to add a new person to the database
+        Button(onClick ={
+            if (!isValidID(viewModel.businesEntityID.value)){
+                //Creating a Toast to give a warning to the user about the ID format
+                val idWarning=Toast.makeText(
+                    activity,
+                    "The BusinessEntityID is required and must be an integer",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning to the user
+                idWarning.show()
+            } else if (!isValidPersonName(viewModel.personFrsName.value)){
+                //Creating a Toast to give a warning to the user about the person's first name format requirements
+                val frsNameWarning = Toast.makeText(
+                    activity,
+                    "The Person's first name is required and its length must be less than 50 characters",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning toast to the user
+                frsNameWarning.show()
+            }else if (!isValidPersonName(viewModel.personLstName.value)){
+                //Creating a Toast to give a warning to the user about the person's last name format requirements
+                val lstNameWarning = Toast.makeText(
+                    activity,
+                    "The Person's Last name is required and its length must be less than 50 characters",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning toast to the user
+                lstNameWarning.show()
+            }else{
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.updatePerson()
+                }
+                //Creating a Toast to let know the user that the new person was succesfully registed
+                val confirmation = Toast.makeText(
+                    activity,
+                    "The person was successfully updated",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the register confirmation Toast
+                confirmation.show()
+            }
+        }) {
+            Text(text = "Update Person")
+        }
+
+    }
 }
 
 @Composable

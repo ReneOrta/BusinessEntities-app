@@ -34,10 +34,22 @@ import kotlinx.coroutines.Dispatchers
 import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
-    val businessEntitiesViewModel: BusinessEntitiesViewModel = viewModel()
-    var name by remember {businessEntitiesViewModel.storeName}
+fun StoreBaseView(viewModel: BusinessEntitiesViewModel){
+    var name by remember {viewModel.storeName}
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value = name,
+        onValueChange = { name=it },
+        label = { Text("Store Name") }
+    )
+}
+
+@Composable
+fun StoreRegistrationView(innerPadding: PaddingValues, activity: ComponentActivity){
+    val viewModel: BusinessEntitiesViewModel = viewModel()
+
     Column(
         modifier = Modifier
             .padding(innerPadding)
@@ -53,17 +65,11 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
            fontSize =30.sp,
            fontWeight = FontWeight.Bold
        )
-       Spacer(modifier = Modifier.height(16.dp))
-       TextField(
-           value = name,
-           onValueChange = { name=it },
-           label = { Text("Store Name") }
-       )
-       Spacer(modifier = Modifier.height(16.dp))
-        Row {
+       StoreBaseView(viewModel = viewModel)
+
             //  Button to add a new Store to the database
             Button(onClick = {
-                if (!isValidStoreName(name)){
+                if (!isValidStoreName(viewModel.storeName.value)){
                     //Creating a Toast to give a warning to the user
                     val warning = Toast.makeText(
                         activity,
@@ -74,7 +80,7 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
                     warning.show()
                 }else{
                     CoroutineScope(Dispatchers.IO).launch {
-                        businessEntitiesViewModel.registrateStore()
+                        viewModel.registrateStore()
                     }
                     //Creating a Toast to let know the user that the store was succesfully registed
                     val confirmation = Toast.makeText(
@@ -94,10 +100,79 @@ fun StoreView(innerPadding: PaddingValues, activity: ComponentActivity){
         }
 
     }
+
+
+@Composable
+fun StoreUpdateView(innerPadding: PaddingValues, activity: ComponentActivity){
+    val viewModel: BusinessEntitiesViewModel = viewModel()
+    var id by remember {viewModel.businesEntityID}
+    Column(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "Store Data Update",
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            fontSize =30.sp,
+            fontWeight = FontWeight.Bold
+        )
+        BusinessEntityID(viewModel = viewModel)//This functions is located in the BEMenuView.kt archive
+        StoreBaseView(viewModel = viewModel)
+        Spacer(modifier = Modifier.height(16.dp))
+
+            //  Button to add a new Store to the database
+            Button(onClick = {
+                if (!isValidID(id)) {
+                    //Creating a Toast to give a warning to the user about the ID format
+                    val idWarning=Toast.makeText(
+                        activity,
+                        "The BusinessEntityID is required and must be an integer",
+                        Toast.LENGTH_LONG
+                    )
+                    //Showing the warning to the user
+                    idWarning.show()
+                }
+                else if (!isValidStoreName(viewModel.storeName.value)){
+                    //Creating a Toast to give a warning to the user about the name format
+                    val nameWarning = Toast.makeText(
+                        activity,
+                        "The name of the store is required and its length must be less than 50 characters",
+                        Toast.LENGTH_LONG
+                    )
+                    //Showing the warning toast to the user
+                    nameWarning.show()
+                }
+                else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.updateStore()
+                    }
+                    //Creating a Toast to let know the user that the store was succesfully registed
+                    val confirmation = Toast.makeText(
+                        activity,
+                        "The store was successfully updated",
+                        Toast.LENGTH_LONG
+                    )
+                    //Showing the register confirmation Toast
+                    confirmation.show()
+                }
+            }) {
+                Text(
+                    text = "Update Store",
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
 }
 
 
-private fun isValidStoreName(name:String):Boolean{
+
+
+fun isValidStoreName(name:String):Boolean{
     if (name != "" && name != null && name.length<=50)
         return true
     else

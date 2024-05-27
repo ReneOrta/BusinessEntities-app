@@ -9,11 +9,15 @@ import androidx.navigation.compose.composable
 import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.Destination.*
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.HomeView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonSearchView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonUpdateView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.PersonView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreRegistrationView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreSearchView
-import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreRegistrationView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.StoreUpdateView
 import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorSearchView
-import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorRegistrationView
+import mx.edu.itcm.mx.edu.itcm.businessentities.views.VendorUpdateView
 
 @Composable
 fun NavigationHost(
@@ -29,17 +33,26 @@ fun NavigationHost(
         composable(Destination.PersonSearchScreen.route){
             PersonSearchView(innerPadding = innerPadding,activity = activity)
         }
+        composable(Destination.PersonUpdateScreen.route){
+            PersonUpdateView(innerPadding = innerPadding, activity =activity)
+        }
         composable(Destination.StoreRegistrationScreen.route){
-            StoreView(innerPadding = innerPadding, activity = activity)
+            StoreRegistrationView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.StoreSearchScreen.route){
             StoreSearchView(innerPadding = innerPadding,activity = activity)
         }
+        composable(Destination.StoreUpdateScreen.route){
+            StoreUpdateView(innerPadding = innerPadding, activity = activity)
+        }
         composable(Destination.VendorRegistrationScreen.route){
-            VendorView(innerPadding = innerPadding, activity = activity)
+            VendorRegistrationView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.VendorSearchScreen.route){
             VendorSearchView(innerPadding = innerPadding, activity = activity)
+        }
+        composable(Destination.VendorUpdateScreen.route){
+            VendorUpdateView(innerPadding = innerPadding, activity = activity)
         }
         composable(Destination.HomeScreeen.route){
             HomeView(innerPadding = innerPadding)

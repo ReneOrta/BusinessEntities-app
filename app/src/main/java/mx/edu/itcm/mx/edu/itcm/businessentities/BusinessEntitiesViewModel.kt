@@ -21,7 +21,7 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     val businessEntitiesView= BusinessEntities()
     private var debounceJob: Job? = null
-    var businesEntityID=mutableStateOf(0)
+    var businesEntityID=mutableStateOf("")
 
     //Person variables
     val personView= Person()
@@ -153,8 +153,8 @@ class BusinessEntitiesViewModel : ViewModel() {
     }
     //Function to update a person
     suspend fun updatePerson(){
-        personView.businessEntityID=businesEntityID.value
-        personView.personType=personType.value
+        personView.businessEntityID=businesEntityID.value.toInt()
+        personView.personType=pTypeFormat(personType.value)
         personView.firstName=personFrsName.value
         personView.lastName=personLstName.value
         try{
@@ -238,7 +238,7 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     //Function to update a person
     suspend fun updateStore(){
-        storeView.businessEntityID=businesEntityID.value
+        storeView.businessEntityID=businesEntityID.value.toInt()
         storeView.name=storeName.value
         try{
             println("Trying store data update: ${storeView.toString()}")
@@ -285,7 +285,7 @@ class BusinessEntitiesViewModel : ViewModel() {
 
     //Function to update a person
     suspend fun updateVendor(){
-        vendorView.businessEntityID=businesEntityID.value
+        vendorView.businessEntityID=businesEntityID.value.toInt()
         vendorView.accountNumber=vendorAccNum.value
         vendorView.name=storeName.value
         try{

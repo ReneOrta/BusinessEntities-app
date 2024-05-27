@@ -3,6 +3,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -39,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.Destination
 import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.NavigationHost
 
@@ -102,17 +105,17 @@ fun BEMenu(activity: ComponentActivity) {
                                             "Persons" -> when (subItem) {
                                                 "Registration" -> navController.navigate(Destination.PersonRegistrationScreen.route)
                                                 "Search" -> navController.navigate(Destination.PersonSearchScreen.route)
-                                                "Modifications" -> navController.navigate("persons_modificaciones")
+                                                "Modifications" -> navController.navigate(Destination.PersonUpdateScreen.route)
                                             }
                                             "Stores" -> when (subItem) {
                                                 "Registration" -> navController.navigate(Destination.StoreRegistrationScreen.route)
                                                 "Search" -> navController.navigate(Destination.StoreSearchScreen.route)
-                                                "Modifications" -> navController.navigate("stores_modificaciones")
+                                                "Modifications" -> navController.navigate(Destination.StoreUpdateScreen.route)
                                             }
                                             "Vendors" -> when (subItem) {
                                                 "Registration" -> navController.navigate(Destination.VendorRegistrationScreen.route)
                                                 "Search" -> navController.navigate(Destination.VendorSearchScreen.route)
-                                                "Modifications" -> navController.navigate("vendors_modificaciones")
+                                                "Modifications" -> navController.navigate(Destination.VendorUpdateScreen.route)
                                             }
                                         }
                                     },
@@ -169,4 +172,21 @@ fun BEMenu(activity: ComponentActivity) {
             )
         }
     )
+}
+
+@Composable
+fun BusinessEntityID(viewModel: BusinessEntitiesViewModel){
+    var id by remember {viewModel.businesEntityID}
+    Spacer(modifier = Modifier.height(16.dp))
+    TextField(
+        value =id ,
+        onValueChange ={id=it},
+        label = { Text("Business Entity ID") })
+}
+
+fun isValidID(id:String):Boolean{
+    if( id != "" && id.toIntOrNull() != null)
+        return true
+    else
+        return false
 }
