@@ -17,5 +17,13 @@ This module was developed for the NATIVE MOBILE PROGRAMMING course, taught by th
 <img src="https://github.com/ReneOrta/BusinessEntities-app/assets/87352628/aa21ec84-4ebe-4453-9b39-29c871e6ae2a" width="450" height="250" />
 <img src="https://github.com/ReneOrta/BusinessEntities-app/assets/87352628/dc9b73be-e9be-48ff-a018-c26ecae63131" width="200" height="200" />
 
+<h2>Test Requirements</h2>
+
+<p><b>English:</b> To test this project, you need to configure the IP address of the web service. To do this, ensure that the web service is running. 
+You can find the web service at https://github.com/ReneOrta/BusinessEntities-WS.git </p>
+
+<p><b>Spanish:</b>Para poder probar este poryecto, necesita confirgurar la dirección IP correspondiente a la ubicación del Web Service. Para hacer esto, asegurese  de que el web service se encuentre corriendo.
+
+Usted puede encontrar el web service en https://github.com/ReneOrta/BusinessEntities-WS.git</p>
 
 
