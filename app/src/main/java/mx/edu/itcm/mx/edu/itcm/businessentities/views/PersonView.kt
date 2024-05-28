@@ -94,7 +94,17 @@ Column(
 
         //Button to add a new person to the database
         Button(onClick ={
-        if (!isValidPersonName(viewModel.personFrsName.value)){
+            if (!isValidPersonType(viewModel.personType.value)){
+                //Creating a Toast to give a warning to the user about the Person Type format
+                val pTypeWarning=Toast.makeText(
+                    activity,
+                    "You need to choose the Type of the person",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning to the user
+                pTypeWarning.show()
+            }
+            else if (!isValidPersonName(viewModel.personFrsName.value)){
             //Creating a Toast to give a warning to the user about the person's first name format requirements
             val frsNameWarning = Toast.makeText(
                 activity,
@@ -165,7 +175,17 @@ fun PersonUpdateView(innerPadding: PaddingValues, activity: ComponentActivity){
 
         //Button to add a new person to the database
         Button(onClick ={
-            if (!isValidID(viewModel.businesEntityID.value)){
+            if (!isValidPersonType(viewModel.personType.value)){
+                //Creating a Toast to give a warning to the user about the Person Type format
+                val pTypeWarning=Toast.makeText(
+                    activity,
+                    "You need to choose the Type of the person",
+                    Toast.LENGTH_LONG
+                )
+                //Showing the warning to the user
+                pTypeWarning.show()
+            }
+            else if (!isValidID(viewModel.businesEntityID.value)){
                 //Creating a Toast to give a warning to the user about the ID format
                 val idWarning=Toast.makeText(
                     activity,
@@ -245,7 +265,7 @@ Box{
 }
 
 private fun isValidPersonType(pType:String):Boolean{
-    if(pType != "" && pType != null)
+    if(pType != "" && pType != null &&pType!= "Person types")
         return true
     else
         return false

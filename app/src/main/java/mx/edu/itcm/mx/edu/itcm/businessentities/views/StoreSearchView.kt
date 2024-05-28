@@ -40,11 +40,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mx.edu.itcm.mx.edu.itcm.businessentities.BusinessEntitiesViewModel
 import mx.edu.itcm.mx.edu.itcm.businessentities.datasets.Store
+import mx.edu.itcm.mx.edu.itcm.businessentities.navigation.Destination
 import mx.edu.itcm.mx.edu.itcm.bussinesentities.R
 
 @Composable
@@ -101,6 +103,7 @@ fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
     val storeState by storeViewModel.storeState
     val searchText = remember { mutableStateOf("") }
     var query by remember {storeViewModel.storeQuery}
+    val navController = rememberNavController()
 
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -132,6 +135,11 @@ fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                     stores = storeState.store,
                     onItemClick = { selectedStore ->
                         Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
+                        /*
+                        storeViewModel.businesEntityID.value = selectedStore.businessEntityID.toString()
+                        storeViewModel.storeName.value = selectedStore.name
+                        navController.navigate(Destination.StoreUpdateScreen.createRoute(selectedStore.businessEntityID.toString()))
+                    */
                     }
                 )
             }
