@@ -93,7 +93,8 @@ fun VendorRegistrationView(innerPadding: PaddingValues, activity: ComponentActiv
                     //Creating a Toast to give a warning to the user about the account number format requirements
                     val accWarning = Toast.makeText(
                         activity,
-                        "The account number is required and its length must be of 15 characters",
+                        "The account number is required, its length must be 15 characters,\n" +
+                                "and all letters entered must be uppercase.",
                         Toast.LENGTH_LONG
                     )
                     //Showing the warning toast to the user
@@ -199,6 +200,8 @@ fun isValidVendorName(name:String):Boolean{
 fun isValidAccNumber(accNumber: String): Boolean {
     if (accNumber.isNotEmpty() && accNumber.length <= 15 && accNumber.all { !it.isLetter() || it.isUpperCase() }) {
         return true
+    }else{
+        return false
     }
-    return false
+
 }

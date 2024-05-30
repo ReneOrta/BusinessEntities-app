@@ -1,5 +1,4 @@
 package mx.edu.itcm.mx.edu.itcm.businessentities.views
-
 import android.content.Context
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -134,12 +133,12 @@ fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                 StoreList(
                     stores = storeState.store,
                     onItemClick = { selectedStore ->
-                        Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
-                        /*
+                        /*Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
+                        */
                         storeViewModel.businesEntityID.value = selectedStore.businessEntityID.toString()
                         storeViewModel.storeName.value = selectedStore.name
-                        navController.navigate(Destination.StoreUpdateScreen.createRoute(selectedStore.businessEntityID.toString()))
-                    */
+                        navController.navigate(Destination.StoreUpdateScreen.route)
+
                     }
                 )
             }

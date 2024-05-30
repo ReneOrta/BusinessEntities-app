@@ -11,7 +11,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
-private val retrofitStore=Retrofit.Builder().baseUrl("http://192.168.1.68:8081/")
+private val retrofitStore=Retrofit.Builder().baseUrl("http://192.168.1.95:8081/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 

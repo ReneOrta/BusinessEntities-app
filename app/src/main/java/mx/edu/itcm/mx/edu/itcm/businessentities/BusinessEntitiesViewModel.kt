@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.toUpperCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -78,7 +79,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
-     fun fetchStores(){
+    fun fetchStores(){
         viewModelScope.launch{
             try{
                 val response= storeService.getStores()
@@ -98,7 +99,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
     }
 
-     fun fetchVendors(){
+    fun fetchVendors(){
         viewModelScope.launch{
             try{
                 val response= vendorService.getVendor()
@@ -120,10 +121,10 @@ class BusinessEntitiesViewModel : ViewModel() {
 
 
     data class PersonState(
-            val loading: Boolean=false,
-            val person: List<Person> = emptyList(),
-            val error: String? = null
-            )
+        val loading: Boolean=false,
+        val person: List<Person> = emptyList(),
+        val error: String? = null
+    )
 
     data class StoreState(
         val loading: Boolean=false,
@@ -273,7 +274,7 @@ class BusinessEntitiesViewModel : ViewModel() {
     //Function for Vendor Registration
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun registrateVendor() {
-        vendorView.accountNumber=vendorAccNum.value
+        vendorView.accountNumber=vendorAccNum.value.uppercase()
         vendorView.name=vendorName.value
         try{
             println("Trying vendor registration: ${vendorView.toString()}")
@@ -365,7 +366,7 @@ class BusinessEntitiesViewModel : ViewModel() {
         }
         return pType
     }
-    
+
     fun inversePTypeFormat(personType:String):String{
         var pType:String=""
         if (personType=="SCStore Contact"){

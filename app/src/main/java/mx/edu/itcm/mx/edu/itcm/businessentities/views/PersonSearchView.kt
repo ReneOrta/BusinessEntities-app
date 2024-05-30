@@ -121,23 +121,23 @@ fun PersonSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                     )
                     IconButton(
                         onClick = {
-                                when (businessEntitiesViewModel.personFilterOption.value) {
-                                    "Person type" ->{
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            businessEntitiesViewModel.consultPersonType()
-                                        }
-                                    }
-                                    "First name" -> {
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            businessEntitiesViewModel.consultPersonFirstName()
-                                        }
-                                    }
-                                    "Last name" -> {
-                                        CoroutineScope(Dispatchers.IO).launch {
-                                            businessEntitiesViewModel.consultPersonLastName()
-                                        }
+                            when (businessEntitiesViewModel.personFilterOption.value) {
+                                "Person type" ->{
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        businessEntitiesViewModel.consultPersonType()
                                     }
                                 }
+                                "First name" -> {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        businessEntitiesViewModel.consultPersonFirstName()
+                                    }
+                                }
+                                "Last name" -> {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        businessEntitiesViewModel.consultPersonLastName()
+                                    }
+                                }
+                            }
 
                         }
                     ) {

@@ -103,7 +103,7 @@ fun BEMenu(activity: ComponentActivity) {
                                         scope.launch { drawerState.close() }
                                         when (section) {
                                             "Persons" -> when (subItem) {
-                                                "Registration" -> navController.navigate(Destination.PersonRegistrationScreen.route)
+                                                "Registration" ->navController.navigate(Destination.PersonRegistrationScreen.route)
                                                 "Search" -> navController.navigate(Destination.PersonSearchScreen.route)
                                                 "Modifications" -> navController.navigate(Destination.PersonUpdateScreen.route)
                                             }

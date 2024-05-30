@@ -8,9 +8,7 @@ package mx.edu.itcm.mx.edu.itcm.businessentities.navigation
      object  PersonUpdateScreen:Destination("personUpdate")
      object StoreRegistrationScreen: Destination("storeRegistration")
      object StoreSearchScreen:Destination("storeSearch")
-     object StoreUpdateScreen:Destination("storeUpdateScreen"){
-         fun createRoute(storeId: String) = "store_update_screen/$storeId"
-     }
+     object StoreUpdateScreen:Destination("storeUpdateScreen")
      object VendorRegistrationScreen: Destination("vendorRegistration")
      object VendorSearchScreen:Destination("vendorSearch")
      object VendorUpdateScreen:Destination("vendorUpdate")
