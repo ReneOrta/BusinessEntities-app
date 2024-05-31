@@ -264,14 +264,14 @@ Box{
 
 }
 
-private fun isValidPersonType(pType:String):Boolean{
+ fun isValidPersonType(pType:String):Boolean{
     if(pType != "" && pType != null &&pType!= "Person types")
         return true
     else
         return false
 }
 
-private fun isValidPersonName(name:String):Boolean{
+ fun isValidPersonName(name:String):Boolean{
     if (name != "" && name != null && name.length<=50)
         return true
     else

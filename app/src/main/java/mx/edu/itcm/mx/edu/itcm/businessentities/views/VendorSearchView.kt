@@ -136,13 +136,37 @@ fun VendorSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                         onClick = {
                             when (filterOption) {
                                 "Account number" -> {
+                                    if (!isValidAccNumber(query)){
+                                        //Creating a Toast to give a warning to the user about the account number format requirements
+                                        val accWarning = Toast.makeText(
+                                            activity,
+                                            "The account number is required, its length must be 15 characters,\n" +
+                                                    "and all letters entered must be uppercase.",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        //Showing the warning toast to the user
+                                        accWarning.show()
+                                    }
+                                    else {
                                     CoroutineScope(Dispatchers.IO).launch {
                                         vendorViewModel.consultVendorAccount()
                                     }
+                                    }
                                 }
                                 "Company's name" -> {
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        vendorViewModel.consultVendorCompanyName()
+                                    if (!isValidVendorName(query)){
+                                        //Creating a Toast to give a warning to the user about the company's name format requirements
+                                        val nameWarning = Toast.makeText(
+                                            activity,
+                                            "The company name is required and its length must be less than 50 characters",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        //Showing the warning toast to the user
+                                        nameWarning.show()
+                                    }else {
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            vendorViewModel.consultVendorCompanyName()
+                                        }
                                     }
                                 }
                             }

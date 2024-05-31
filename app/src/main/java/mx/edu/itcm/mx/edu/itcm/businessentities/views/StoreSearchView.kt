@@ -133,11 +133,10 @@ fun StoreSearchView(innerPadding: PaddingValues, activity: ComponentActivity) {
                 StoreList(
                     stores = storeState.store,
                     onItemClick = { selectedStore ->
-                        /*Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
-                        */
-                        storeViewModel.businesEntityID.value = selectedStore.businessEntityID.toString()
+                        Toast.makeText(activity, "Selected: ${selectedStore.name}", Toast.LENGTH_SHORT).show()
+                        /*storeViewModel.businesEntityID.value = selectedStore.businessEntityID.toString()
                         storeViewModel.storeName.value = selectedStore.name
-                        navController.navigate(Destination.StoreUpdateScreen.route)
+                        navController.navigate(Destination.StoreUpdateScreen.route)*/
 
                     }
                 )
